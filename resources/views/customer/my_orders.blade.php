@@ -96,40 +96,7 @@
         </div>
     </div>
 </div>
-<div class="bg-white">
-    <div class="container text-center  text-yellow bg-white" style="width: 40%">
-        <canvas class="bg-white" id="orderChart" width="300" height="300" style="max-width: 100%; height: auto;"></canvas>
-    </div>
-</div>
 
-<script>
-        // Get the counts passed from the service provider
-        var pendingCount = {{ $pendingCount }};
-        var shippingCount = {{ $shippingCount }};
-        var deliveredCount = {{ $deliveredCount }};
-
-        // Get the canvas element
-        var ctx = document.getElementById('orderChart').getContext('2d');
-
-        // Create the data for the pie chart
-        var data = {
-            labels: ['Pending', 'Shipped', 'Delivered'],
-            datasets: [{
-                data: [pendingCount, shippingCount, deliveredCount],
-                backgroundColor: [
-                    'orange',
-                    'blue',
-                    'green'
-                ]
-            }]
-        };
-
-        // Create the pie chart
-        var myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: data
-        });
-    </script>
 </body>
 </html>
 @endsection

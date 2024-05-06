@@ -36,6 +36,17 @@
 
     </head>
     <body>
+
+    <style>
+      a {
+    color: orange;
+}
+
+/* Change color of active links in the navigation menu to orange */
+.menu-area-main .active a {
+    color: orange;
+}
+    </style>
     <header>
          <!-- header inner -->
          <div class="header">

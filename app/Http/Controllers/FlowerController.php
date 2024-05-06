@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\QueryException;
 
 use Illuminate\Support\Facades\Validator;
 use App\Models\Flower;
@@ -150,7 +151,15 @@ class FlowerController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Flower $flower){
-        $flower->delete();
-        return redirect()->back()->with('success', 'Flower deleted successfully.');
+        try {
+            $flower->delete();
+            return redirect()->back()->with('success', 'Flower deleted successfully.');
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if($errorCode === 1451) {
+                return redirect()->back()->with('error', 'Cannot delete flower because it is in a current order.');
+            }
+            // Handle other database errors if needed
+        }
     }
 }

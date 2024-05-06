@@ -128,7 +128,7 @@ class OrderController extends Controller
     public function showAllPendingOrders()
     {
         // Retrieve only pending orders
-        $orders = Order::where('pending', true)->where('is_delivered', false)->paginate(5);
+        $orders = Order::where('pending', true)->where('is_delivered', false)->latest()->paginate(5);
         return view('administrator.orders_list', compact('orders'));
     }
     

@@ -29,6 +29,13 @@
     </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
 @foreach ($flowers as $flower)
     <div class="col-md-2 mb-3">
         <div class="card">
