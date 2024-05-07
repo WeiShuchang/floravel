@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+
     Route::middleware('restrictAdmin')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/create/{flower}', [OrderController::class, 'create'])->name('orders.create');
@@ -70,27 +72,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     
-        Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-        Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
-        Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-        Route::get('/suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
-        Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-        Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-        Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-    
-        Route::get('/flowersuppliers', [FlowerSupplierController::class, 'index'])->name('flowersuppliers.index');
-        Route::get('/flowersuppliers/create', [FlowerSupplierController::class, 'create'])->name('flowersuppliers.create');
-        Route::post('/flowersuppliers', [FlowerSupplierController::class, 'store'])->name('flowersuppliers.store');
-        Route::get('/flowersuppliers/{flowersupplier}', [FlowerSupplierController::class, 'show'])->name('flowersuppliers.show');
-        Route::get('/flowersuppliers/{flowersupplier}/edit', [FlowerSupplierController::class, 'edit'])->name('flowersuppliers.edit');
-        Route::put('/flowersuppliers/{flowersupplier}', [FlowerSupplierController::class, 'update'])->name('flowersuppliers.update');
-        Route::delete('/flowersuppliers/{flowersupplier}', [FlowerSupplierController::class, 'destroy'])->name('flowersuppliers.destroy'); 
-    
+      
         Route::get('/all-orders', [OrderController::class, 'showAllPendingOrders'])->name('orders.show_pending_orders');
         Route::get('/all-shipped-orders', [OrderController::class, 'showAllShippedOrders'])->name('orders.show_shipped_orders');
         Route::get('/all-delivered-orders', [OrderController::class, 'showAllDeliveredOrders'])->name('orders.show_delivered_orders');
         Route::post('/orders/{orderId}/ship', [OrderController::class, 'ship'])->name('orders.ship');
         Route::post('/orders/{orderId}/mark-as-delivered', [OrderController::class, 'markAsDelivered'])->name('orders.deliver');
+        Route::get('/reports', [OrderController::class, 'reports'])->name('reports.index');
+        Route::get('/reservations/search_admin', [OrderController::class, 'search_admin'])->name('reports.search_admin');
+
             
 
     });

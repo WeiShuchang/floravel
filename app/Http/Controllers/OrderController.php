@@ -256,5 +256,145 @@ class OrderController extends Controller
         return $pdf->stream('searched_orders.pdf');
     }
 
+    public function reports(Request $request)
+    {
+        // Fetch all orders without pagination
+        $ordersQuery = Order::with('flower')->latest();
+    
+        // Fetch the flower name from the request
+        $flowerName = $request->input('flower_name');
+    
+        // Set the default value for status if not provided in the request
+        $status = $request->input('status', 'any');
+    
+        // Apply filters based on search criteria
+        if ($status === 'pending') {
+            $ordersQuery->where('pending', true)->where('is_delivered', false);
+        } elseif ($status === 'delivered') {
+            $ordersQuery->where('is_delivered', true)->where('pending', false);
+        } elseif ($status === 'shipped') {
+            $ordersQuery->where('pending', false)->where('is_delivered', false);
+        }
+    
+        if ($flowerName) {
+            // Join the flowers table for searching by flower name
+            $ordersQuery->join('flowers', 'orders.flower_id', '=', 'flowers.id')
+                        ->where('flowers.name', 'LIKE', "%$flowerName%");
+        }
+    
+    
+        // Get all the orders matching the criteria
+        $allOrders = $ordersQuery->get();
+    
+        // Initialize status counts for all orders
+        $statusCounts = [
+            'pending' => 0,
+            'delivered' => 0,
+            'shipped' => 0,
+        ];
+    
+        // Count the occurrences of each status for all orders
+        foreach ($allOrders as $order) {
+            if ($order->pending) {
+                $statusCounts['pending']++;
+            } elseif ($order->is_delivered) {
+                $statusCounts['delivered']++;
+            } else {
+                $statusCounts['shipped']++;
+            }
+        }
+    
+        // Prepare data for the pie chart
+        $statusLabels = ['Pending', 'Delivered', 'Shipped'];
+        $statusData = [
+            $statusCounts['pending'],
+            $statusCounts['delivered'],
+            $statusCounts['shipped'],
+        ];
+
+        
+        // Paginate the results for display
+        $orders = $ordersQuery->paginate(10);
+    
+        // Pass the filtered orders, search parameters, and pie chart data to the view
+        return view('administrator.reports', [
+            'orders' => $orders,
+            'flowers' => Flower::all(), 
+            'status' => $status,
+            'flowerName' => $flowerName,
+            'statusLabels' => $statusLabels,
+            'statusData' => $statusData,
+        ]);
+    }
+    
+    
+    
+
+    public function search_admin(Request $request)
+    {
+        $status = $request->input('status');
+        $flowerName = $request->input('flower_name');
+    
+        $ordersQuery = Order::with('flower');
+    
+        // Join the flowers table for searching by flower name
+        $ordersQuery->join('flowers', 'orders.flower_id', '=', 'flowers.id');
+    
+        // Apply filters based on search criteria
+        if ($status === 'pending') {
+            $ordersQuery->where('orders.pending', true)->where('orders.is_delivered', false);
+        } elseif ($status === 'delivered') {
+            $ordersQuery->where('orders.is_delivered', true)->where('orders.pending', false);
+        } elseif ($status === 'shipped') {
+            $ordersQuery->where('orders.pending', false)->where('orders.is_delivered', false);
+        }
+    
+        if ($flowerName) {
+            $ordersQuery->where('flowers.name', 'LIKE', "%$flowerName%");
+        }
+    
+        // Get all the orders matching the criteria
+        $allOrders = $ordersQuery->get();
+    
+        // Initialize status counts for the selected flower
+        $statusCounts = [
+            'pending' => 0,
+            'delivered' => 0,
+            'shipped' => 0,
+        ];
+    
+        // Count the occurrences of each status for the selected flower
+        foreach ($allOrders as $order) {
+            if ($order->pending) {
+                $statusCounts['pending']++;
+            } elseif ($order->is_delivered) {
+                $statusCounts['delivered']++;
+            } else {
+                $statusCounts['shipped']++;
+            }
+        }
+    
+        // Prepare data for the pie chart
+        $statusLabels = ['Pending', 'Delivered', 'Shipped'];
+        $statusData = [
+            $statusCounts['pending'],
+            $statusCounts['delivered'],
+            $statusCounts['shipped'],
+        ];
+    
+        // Paginate the results for display
+        $orders = $ordersQuery->paginate(10);
+    
+        // Pass the filtered orders, search parameters, and pie chart data to the view
+        return view('administrator.reports', [
+            'orders' => $orders,
+            'flowers' => Flower::all(), 
+            'status' => $status,
+            'flowerName' => $flowerName,
+            'statusLabels' => $statusLabels,
+            'statusData' => $statusData,
+        ]);
+    }
+    
 
 }

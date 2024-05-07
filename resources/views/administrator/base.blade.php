@@ -23,6 +23,12 @@
 
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 
 
     </head>
@@ -36,15 +42,26 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/administrator">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('flowers.index') }}">Flowers</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('suppliers.index') }}">Suppliers</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}">Categories</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('flowersuppliers.index') }}">Flower-Supplier</a></li>
+
                     </ul>
                     <ul class="navbar-nav">
+
+                    
             
-                  <li class="nav-item"><a class="mx-3 nav-link left" aria-current="page" href="{{route('orders.show_pending_orders')}}">Pending Orders</a></li>
-                  <li class="nav-item"><a class="mx-3 nav-link left" aria-current="page" href="{{route('orders.show_shipped_orders')}}">Shipped Orders</a></li>
-                  <li class="nav-item"><a class="mx-3 nav-link left" aria-current="page" href="{{route('orders.show_delivered_orders')}}">Delivered Orders</a></li>
+                    <div class="dropdown">
+                      <button class="btn  dropdown-toggle" type="button" id="orderDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Orders
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="orderDropdownMenu">
+                        <a class="dropdown-item" href="{{ route('orders.show_pending_orders') }}">Pending Orders</a>
+                        <a class="dropdown-item" href="{{ route('orders.show_shipped_orders') }}">Shipped Orders</a>
+                        <a class="dropdown-item" href="{{ route('orders.show_delivered_orders') }}">Delivered Orders</a>
+                      </div>
+                    </div>
+
+                    <li class="nav-item"><a class="nav-link" href="{{ route('reports.index') }}">Reports</a></li>
+
             @if (Auth::check())
               <li class="nav-item">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="mx-3 nav-link left">Logout</a>
