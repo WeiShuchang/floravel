@@ -17,14 +17,15 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
    
-    public function index()
-    {
-        // Fetch the list of flowers for sale along with their suppliers
-        $flowers = Flower::latest()->get();
-
-        // Pass the flowers list to the view
-        return view('customer.flowers_list', compact("flowers"));
-    }
+     public function index()
+     {
+         // Fetch the list of flowers for sale along with their suppliers
+         $flowers = Flower::latest()->paginate(6);
+     
+         // Pass the paginated flowers list to the view
+         return view('customer.flowers_list', compact('flowers'));
+     }
+     
 
     /**
      * Show the form for creating a new resource.
@@ -259,21 +260,14 @@ class OrderController extends Controller
 
     // Fetch the searched orders
     $orders = $ordersQuery->latest()->get();
-
     // Get the current date
     $currentDate = date('F j, Y'); 
-
     // Create a new Dompdf instance
     $pdf = new Dompdf();
-
     // Load HTML content into Dompdf
     $pdf->loadHtml(view('customer.my_orders_pdf', compact('orders', 'currentDate'))->render());
-
-    // Optionally, you can set additional configuration options for Dompdf here
-
     // Render PDF
     $pdf->render();
-
     // Logo para sa na-export na file
     $logos = [
         [

@@ -27,7 +27,7 @@
 
         @if(count($flowers) > 0)
             <div class="col-md-12 mb-3">
-                <p>{{ count($flowers) }} result(s) found.</p>
+                <p>{{ $flowers->total() }} result(s) found.</p>
             </div>
             @foreach ($flowers as $flower)
                 <div class="col-md-2 text-dark">
@@ -50,6 +50,9 @@
                     </div>
                 </div>
             @endforeach
+            <div class="col-md-12 mt-3">
+                {{ $flowers->appends(request()->input())->links('pagination::simple-bootstrap-4') }}
+            </div>
         @else
             <div class="col-md-12 mb-3">
                 <p>No results found.</p>

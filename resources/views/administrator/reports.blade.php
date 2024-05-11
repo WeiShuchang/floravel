@@ -11,8 +11,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-       
-          
                 <div class="">
                     <form action="{{ route('reports.search_admin') }}" method="GET" style="background:none;padding: 20px ;">
                         <div class="input-group">

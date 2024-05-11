@@ -176,7 +176,7 @@ class FlowerController extends Controller
                     ->join('categories', 'flowers.category_id', '=', 'categories.id')
                     ->where('flowers.name', 'like', "%$query%")
                     ->orWhere('categories.category_name', 'like', "%$query%")
-                    ->paginate(10);
+                    ->paginate(6);
 
     return view('customer.flowers_list', compact('flowers'));
 }
