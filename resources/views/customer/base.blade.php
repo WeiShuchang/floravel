@@ -33,6 +33,7 @@
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    
 
     </head>
     <body>
@@ -67,6 +68,8 @@
                                  <li class="active"> <a href="{{route('user')}}">Home</a> </li>
                                  <li> <a href="{{route('orders.index')}}">Shop Flowers</a> </li>
                                  <li> <a href="{{route('orders.my_orders')}}">My Orders</a> </li>
+                                 <li> <a href="{{route('orders.my_order_history')}}">Order History</a></li>
+
 
                                  @if (Auth::check())
                                  <li class="nav-item">

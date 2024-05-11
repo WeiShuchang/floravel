@@ -34,21 +34,23 @@
                 <table class="table table-bordered ">
                     <thead>
                         <tr>
+                            <th>Name of User</th>
                             <th>Flower Image</th>
                             <th>Flower</th>
                             <th>Shipping Address</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total Amount</th>
-                      
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($orders as $order)
                         <tr>
+                            <td>{{ $order->user->name }}</td>
                             <td>
                                 <img src="{{ asset('storage/flower/' . $order->flower->picture) }}" alt="{{ $order->flower->name }}" style="max-height: 100px;">
                             </td>
+                            
                             <td>{{ $order->flower->name }}</td>
                             <td>{{ $order->shipping_address }}</td>
                             <td>{{ $order->flower->price }}</td>

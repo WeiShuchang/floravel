@@ -45,6 +45,7 @@ class FlowerController extends Controller
                 'description' => 'nullable|string|max:255',
                 'picture' => 'nullable|image|max:2048',
                 'price' => 'required|numeric|min:1',
+                'stocks' => 'required|numeric|min:0',
                 'category_id' => 'required|exists:categories,id',
             ]);
     
@@ -105,6 +106,7 @@ class FlowerController extends Controller
                 'category_id' => 'required|integer',
                 'description' => 'required|string|max:255',
                 'price' => 'required|numeric|min:1',
+                'stocks' => 'required|numeric|min:0',
                 'picture' => 'image|mimes:jpeg,png,jpg,gif', // Assuming max file size is 2MB
             ], [
                 'name.required' => 'The flower name is required.',
@@ -128,6 +130,7 @@ class FlowerController extends Controller
                 'category_id' => $validatedData['category_id'],
                 'description' => $validatedData['description'],
                 'price' => $validatedData['price'],
+                'stocks' => $validatedData['stocks']
             ]);
     
             // Handle flower picture update
@@ -162,4 +165,20 @@ class FlowerController extends Controller
             // Handle other database errors if needed
         }
     }
+
+
+    //Code para masearch ung flower based on category at name, joined tables
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $flowers = Flower::select('flowers.*')
+                    ->join('categories', 'flowers.category_id', '=', 'categories.id')
+                    ->where('flowers.name', 'like', "%$query%")
+                    ->orWhere('categories.category_name', 'like', "%$query%")
+                    ->paginate(10);
+
+    return view('customer.flowers_list', compact('flowers'));
+}
+
 }

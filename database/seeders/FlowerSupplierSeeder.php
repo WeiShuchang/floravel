@@ -15,3 +15,5 @@ class FlowerSupplierSeeder extends Seeder
         //
     }
 }
+
+//php artisan db:seed --class=FlowerSeeder

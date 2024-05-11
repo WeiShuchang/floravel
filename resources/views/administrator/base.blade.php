@@ -61,6 +61,7 @@
                     </div>
 
                     <li class="nav-item"><a class="nav-link" href="{{ route('reports.index') }}">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.order_history') }}">Order History</a></li>
 
             @if (Auth::check())
               <li class="nav-item">

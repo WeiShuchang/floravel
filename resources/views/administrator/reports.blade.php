@@ -57,6 +57,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>User Name</th>
                                 <th>Flower Image</th>
                                 <th>Flower</th>
                                 <th>Shipping Address</th>
@@ -67,8 +68,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             @foreach($orders as $order)
+                            
                             <tr>
+                                
+                            <td>{{ $order->user->name }}</td>
                                 <td style="max-width: 100px;">
                                     <img src="{{ asset('storage/flower/' . $order->flower->picture) }}" alt="{{ $order->flower->name }}" style="max-height: 80px;">
                                 </td>

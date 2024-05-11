@@ -34,13 +34,44 @@
         .shipped {
             color: blue;
         }
+        /* Additional styles */
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .header-left
+        {
+     
+            text-align: left;
+        }
+        .header-right {
+            text-align: right;
+        }
+        .top-center {
+            text-align: center;
+            margin-top: 20px; /* Adjust as needed */
+            margin-bottom: 10px; /* Adjust as needed */
+            font-weight: bold; /* Adjust as needed */
+            font-size: 18px; /* Adjust as needed */
+        }
     </style>
 </head>
 <body>
-    <h1>My Orders</h1>
+
+<div class="top-center" style="margin-top:30px">
+    Floravel Inc.<br>
+    123 Main Street, Florafield City<br>
+    2601, La Trinidad, Benguet<br>
+    {{$currentDate}}
+</div>
+
+
+    <h1 >Orders Report</h1>
     <table>
         <thead>
             <tr>
+                <th>User</th>
                 <th>Flower</th>
                 <th>Shipping Address</th>
                 <th>Price</th>
@@ -52,11 +83,12 @@
         <tbody>
             @foreach($orders as $order)
             <tr>
+                <td>{{ $order->user->name }}</td>
                 <td>{{ $order->flower->name }}</td>
                 <td>{{ $order->shipping_address }}</td>
-                <td>php {{ $order->flower->price }}</td>
+                <td>php. {{ $order->flower->price }}</td>
                 <td>{{ (int) $order->quantity }}</td>
-                <td>php {{ $order->total_amount }}</td>
+                <td>php. {{ $order->total_amount }}</td>
                 <td class="@if($order->pending) pending @elseif($order->is_delivered) delivered @else shipped @endif">
                     @if($order->pending)
                         Pending
@@ -68,7 +100,22 @@
                 </td>
             </tr>
             @endforeach
+            
         </tbody>
+        <tfoot>
+                <tr class="total-row">
+                    <td colspan="5" style="text-align:right;">Total Price:</td>
+                    <td colspan="2" style="font-weight:bold;">
+                    php.@php
+                            $totalPrice = 0;
+                            foreach ($orders as $order) {
+                                $totalPrice += $order->total_amount;
+                            }
+                            echo $totalPrice;
+                        @endphp
+                    </td>
+                </tr>
+            </tfoot>
     </table>
 </body>
 </html>

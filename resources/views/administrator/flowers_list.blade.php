@@ -37,13 +37,14 @@
 
 
 @foreach ($flowers as $flower)
-    <div class="col-md-2 mb-3">
+    <div class="col-md-3 mb-3">
         <div class="card">
             <img src="{{ asset('storage/flower/' . $flower->picture) }}" class="card-img-top" alt="{{ $flower->name }}" height="200">
             <div class="card-body">
                 <h4 class="card-title font-weight-bold">{{ $flower->name }}</h4>
                 <p class="card-text">{{ $flower->description }}</p>
                 <p class="card-text">Price: {{ $flower->price }}</p>
+                <p class="card-text">Stocks: {{ $flower->stocks }}</p>
                 <p class="card-text">Category: {{ $flower->category->category_name }}</p>
                 <a href="{{ route('flowers.edit', $flower->id) }}" class="btn btn-primary">Edit</a>
                 <form action="{{ route('flowers.destroy', $flower->id) }}" method="POST" style="display: inline;">

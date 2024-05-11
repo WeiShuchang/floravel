@@ -3,12 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FLowerController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\FlowerSupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
-use App\Http\Middleware\RedirectBasedOnRole;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\PreventBackHistory;
 use App\Http\Middleware\RestrictAdminAccess;
 use App\Http\Middleware\RestrictUserAccess;
 
@@ -20,6 +18,7 @@ Route::middlewareGroup('restrictUser', [
     RestrictUserAccess::class,
 ]);
 
+Route::middleware([PreventBackHistory::class])->group(function(){
 
 
 Route::middleware([RedirectIfAuthenticated::class])->group(function () {
@@ -42,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
+    Route::get('/orders/export/pdf', [OrderController::class, 'exportToPDF'])->name('orders.export_pdf');
 
     Route::middleware('restrictAdmin')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -50,9 +49,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
         Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my_orders');
         Route::get('/reservations/search', [OrderController::class, 'search'])->name('completed.reservations.search');
-        Route::get('/orders/export/pdf', [OrderController::class, 'exportToPDF'])->name('orders.export_pdf');
+        Route::get('/flowers/search', [FlowerController::class, 'search'])->name('flowers.search');
+        Route::get('/reports', [OrderController::class, 'reports'])->name('reports.index');
+        Route::post('/orders/{orderId}/cancel_user', [OrderController::class, 'cancel_user'])->name('orders.cancel_user');
+        Route::get('/orders/{id}/cancel_user_view', [OrderController::class, 'showCancelForm'])->name('orders.cancel_user_view');
+        Route::post('notify-cancelled-orders', [OrderController::class, 'notifyCancelled'])->name('notify_cancel_func');
+        Route::get('view-order-history', [OrderController::class, 'viewOrderHistory'])->name('orders.my_order_history');
+        Route::post('orders/confirm-delivery/{orderId}', [OrderController::class, 'confirmDelivery'])->name('orders.confirm_delivery');
 
-    
     });
     
     Route::middleware('restrictUser')->group(function () {
@@ -79,7 +83,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/orders/{orderId}/ship', [OrderController::class, 'ship'])->name('orders.ship');
         Route::post('/orders/{orderId}/mark-as-delivered', [OrderController::class, 'markAsDelivered'])->name('orders.deliver');
         Route::get('/reports', [OrderController::class, 'reports'])->name('reports.index');
+        Route::post('/orders/{orderId}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
         Route::get('/reservations/search_admin', [OrderController::class, 'search_admin'])->name('reports.search_admin');
+        Route::get('/admin_order_history', [OrderController::class, 'adminOrderHistory'])->name('admin.order_history');
 
             
 
@@ -109,4 +115,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
 });
 
+
 require __DIR__.'/auth.php';
+
+});
+

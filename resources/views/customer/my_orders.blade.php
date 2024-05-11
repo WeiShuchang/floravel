@@ -3,6 +3,7 @@
 @section('page_title', 'My Orders')
 
 @section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="center-div" style="margin-top: 150px;">
     <h1 class="container">My Orders</h1>
@@ -11,7 +12,25 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-       
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success" role="alert" id="alert-message">
+                {{ session('success') }}
+            </div>
+            @endif
+        @if ($errors->any())
+            <div class="alert alert-danger" id="alert-message">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
           
                 <div class="">
                     <form action="{{ route('completed.reservations.search') }}" method="GET" style="background:none;padding: 20px ;">
@@ -51,6 +70,7 @@
                                 <th>Quantity</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,19 +84,28 @@
                                 <td>₱{{ $order->flower->price }}</td>
                                 <td>x{{ (int) $order->quantity }}</td>
                                 <td>₱{{ $order->total_amount }}</td>
-                                
                                 <td>
                                     @if($order->pending)
-                                        <span class="text-warning">Pending</span>
+                                    <span class="text-warning">Pending</span>
+                                    <!-- Add cancel button for pending orders -->
+                                    <td>
+                                        <a href="{{ route('orders.cancel_user_view', $order->id) }}" class="btn btn-danger btn-sm">Cancel Order</a>
+                                    </td>
                                     @elseif($order->is_delivered)
-                                        <span class="text-success">Delivered</span>
+                                    <span class="text-success">Delivered</span>
+                                        <td>
+                                            <form method="POST" action="{{ route('orders.confirm_delivery', $order->id) }}" style="background:none;padding:0; margin:0;">
+                                                @csrf
+                                                <button type="submit" style="padding:5; margin:0;" class="btn btn-success btn-sm">Confirm Delivery</button>
+                                            </form>
+                                        </td>
                                     @else
                                         <span class="text-primary">Shipped</span>
+                                        <td></td>
                                     @endif
                                 </td>
-
                             </tr>
-                            @endforeach
+                        @endforeach                       
                         </tbody>
                     </table>
                 @endif
@@ -91,6 +120,7 @@
     </div>
 </div>
 
-</body>
-</html>
+
+</script>
+
 @endsection

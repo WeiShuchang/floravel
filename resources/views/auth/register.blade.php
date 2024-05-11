@@ -41,7 +41,7 @@
                   </div>
 
                   <div class="pt-1 mb-1">
-                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg btn-block" type="button" >Sign Up</button>
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg btn-block" type="submit" >Sign Up</button>
                   </div>
 
                 

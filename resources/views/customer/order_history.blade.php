@@ -1,11 +1,11 @@
-@extends('administrator.base')
+@extends('customer.base')
 
 @section('page_title', 'My Orders')
 
 @section('content')
 
-<div class="center-div " >
-    <h1 class="container">Shipping Orders</h1>
+<div class="center-div" style="margin-top: 150px;">
+    <h1 class="container">Order History</h1>
 </div>
 
 <div class="container">
@@ -34,37 +34,48 @@
                 <table class="table table-bordered ">
                     <thead>
                         <tr>
-                            <th>Name of User</th>
-                            <th>Flower Image</th>
+                        
                             <th>Flower</th>
                             <th>Shipping Address</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total Amount</th>
-                            <th>Complete Delivery</th>
+                            <th>Reason For Cancel</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($orders as $order)
                         <tr>
-                            <td>{{ $order->user->name }}</td>
-                            <td>
-                                <img src="{{ asset('storage/flower/' . $order->flower->picture) }}" alt="{{ $order->flower->name }}" style="max-height: 100px;">
-                            </td>
+                        
                             <td>{{ $order->flower->name }}</td>
                             <td>{{ $order->shipping_address }}</td>
                             <td>₱{{ $order->flower->price }}</td>
                             <td>x{{ $order->quantity }}</td>
                             <td>₱{{ $order->total_amount }}</td>
-                            <td>
-                                <form action="{{ route('orders.deliver', ['orderId' => $order->id]) }}" method="POST">
-                                    @csrf
-                                    @method('POST')
-
-                                    <button type="submit" class="btn btn-primary">Mark as Delivered</button>
-                                </form>
+                            @if($order->cancel_reason)
+                            <td>{{ $order->cancel_reason }}</td>
+                            @else
+                            <td></td>
+                            @endif
+                            <td style="color: 
+                                @if($order->is_cancelled)
+                                    red
+                                @elseif($order->is_confirmed)
+                                    blue
+                                @else
+                                    grey
+                                @endif
+                            ">
+                                @if($order->is_cancelled)
+                                    Cancelled
+                                @elseif($order->is_confirmed)
+                                    Confirmed
+                                @else
+                                    Pending
+                                @endif
                             </td>
-
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

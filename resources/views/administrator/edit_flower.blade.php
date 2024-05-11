@@ -20,10 +20,10 @@
  
     <div class="container py-4">
         @if($errors->any())
-            <div class="alert alert-danger  ">
+            <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
-                    {{ $error }}
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -41,21 +41,21 @@
 
                             <div class="form-group py-2">
                                 <label for="name">Flower Name</label>
-                                <input type="text" name="name" class="form-control" id="name" value="{{ $flower->name }}" required>
+                                <input type="text" name="name" class="form-control" id="name" value="{{ old('name', $flower->name) }}" required>
                             </div>
 
                             <div class="form-group py-2">
                                 <label for="category_id">Category</label>
                                 <select name="category_id" class="form-control" required>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ $flower->category_id == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}" {{ old('category_id', $flower->category_id) == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="form-group py-2">
                                 <label for="description">Description</label>
-                                <textarea name="description" class="form-control" rows="3" required>{{ $flower->description }}</textarea>
+                                <textarea name="description" class="form-control" rows="3" required>{{ old('description', $flower->description) }}</textarea>
                             </div>
 
                             <div class="form-group py-2" style="max-width: 100px;">
@@ -73,7 +73,11 @@
 
                             <div class="form-group py-2">
                                 <label for="price">Price</label>
-                                <input type="text" name="price" class="form-control" id="price" value="{{ $flower->price }}" required>
+                                <input type="number" name="price" class="form-control" id="price" value="{{ old('price', $flower->price) }}" required>
+                            </div>
+                            <div class="form-group py-2">
+                                <label for="Stock">Stock</label>
+                                <input type="number" name="stocks" class="form-control" id="stocks" value="{{ old('stocks', $flower->stocks) }}" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Update</button>

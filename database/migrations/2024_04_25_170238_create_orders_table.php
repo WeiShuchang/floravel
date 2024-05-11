@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('shipping_address'); // Adding shipping_address field
             $table->decimal('quantity', 10);
             $table->boolean('is_delivered')->default(false);
+            $table->boolean('is_cancelled')->default(false);
+            $table->boolean('is_confirmed')->default(false);
+            $table->boolean('notify_cancel')->default(false);
+            $table->boolean('notify_delivery')->default(false);
+            $table->string('cancel_reason',100)->nullable();
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict'); // Adding foreign key constraint
             $table->foreign('flower_id')->references('id')->on('flowers')->onDelete('restrict'); // Add foreign key constraint
             $table->timestamps();

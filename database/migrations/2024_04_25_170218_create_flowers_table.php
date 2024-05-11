@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('picture')->nullable();
+            $table->integer('stocks')->unsigned()->default(0);
             $table->decimal('price', 8, 2); // Assuming price is in decimal format with 8 digits in total and 2 decimal places
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
